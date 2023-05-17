@@ -81,11 +81,9 @@ const UploadImage = () => {
                 })
                 .catch((err) => {
                     console.log(err);
-                    setLoading(false);
                 });
         } else {
             window.alert("Please select a valid image (JPEG or PNG)");
-            setLoading(false);
             return;
         }
     };
