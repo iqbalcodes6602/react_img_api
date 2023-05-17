@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
-const UploadImage = (props) => {
+
+const UploadImage = () => {
+    //jwt funcitions
+    const token = localStorage.getItem("token");// Get the JWT token from your authentication process
+    // Decode the JWT token and extract the user ID
+    const decodedToken = jwt_decode(token);
+    const userId = decodedToken._id;
+
     //modalfunctionality
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
 
-    const [user, setUser] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [cloudinaryUrl, setCloudinaryUrl] = useState('');
     const [image, setImage] = useState(null);
 
-    const handleUserChange = (e) => {
-        setUser(e.target.value);
-    };
+    // const handleUserChange = (e) => {
+    //     setUser(e.target.value);
+    // };
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -37,28 +44,25 @@ const UploadImage = (props) => {
 
     const handleUpload = async () => {
         try {
-            const formData = new FormData();
-            formData.append('image', image);
-            formData.append('user', {user});
-            formData.append('title', title);
-            formData.append('description', description);
-            formData.append('cloudinaryUrl', cloudinaryUrl);
+            const requestBody = {
+                user: userId, // from token
+                title: title,
+                description: description,
+                cloudinaryUrl: cloudinaryUrl,
+            };
 
-            const response = await axios.post('http://localhost:8080/api/img/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            const response = await axios.post('http://localhost:8080/api/img/upload', requestBody);
 
+            console.log(userId);
             console.log(response.data); // Log the response from the backend
         } catch (error) {
             console.error(error);
         }
     };
 
+
     return (
         <>
-
             <Modal.Header closeButton>
                 <Modal.Title>
                     <h2>Upload Image</h2>
@@ -66,10 +70,6 @@ const UploadImage = (props) => {
             </Modal.Header>
             <Modal.Body>
                 <div>
-                    <div>
-                        <label>User:</label>
-                        <input type="text" value={user} onChange={handleUserChange} />
-                    </div>
                     <div>
                         <label>Title:</label>
                         <input type="text" value={title} onChange={handleTitleChange} />
@@ -81,10 +81,6 @@ const UploadImage = (props) => {
                     <div>
                         <label>URL:</label>
                         <input type="text" value={cloudinaryUrl} onChange={handleCloudinaryUrlChange} />
-                    </div>
-                    <div>
-                        <label>Image:</label>
-                        <input type="file" accept="image/*" onChange={handleImageChange} />
                     </div>
                     <button onClick={handleUpload}>Upload</button>
                 </div>
