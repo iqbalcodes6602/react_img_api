@@ -5,7 +5,7 @@ import Lightbox from 'react-awesome-lightbox';
 import 'react-awesome-lightbox/build/style.css';
 import UploadImage from './UploadImage'
 
-const Main = (props) => {
+const Main = () => {
 	const handleLogout = () => {
 		localStorage.removeItem("token");
 		window.location.reload();
@@ -75,7 +75,7 @@ const Main = (props) => {
 
 
 			<Modal show={show} onHide={handleClose}>
-				<UploadImage user={props.user} />
+				<UploadImage />
 			</Modal>
 		</div>
 	);
