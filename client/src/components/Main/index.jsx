@@ -5,9 +5,15 @@ import Lightbox from 'react-awesome-lightbox';
 import 'react-awesome-lightbox/build/style.css';
 import UploadImage from './UploadImage';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 
 const Main = () => {
+	const token = localStorage.getItem("token");// Get the JWT token from your authentication process
+	// Decode the JWT token and extract the user ID
+	const decodedToken = jwt_decode(token);
+	const userId = decodedToken._id;
+
 	const handleLogout = () => {
 		localStorage.removeItem("token");
 		window.location.reload();
@@ -28,7 +34,7 @@ const Main = () => {
 	useEffect(() => {
 		const fetchImages = async () => {
 			try {
-				const response = await axios.get('http://localhost:8080/api/img/images');
+				const response = await axios.get(`http://localhost:8080/api/img/images/${userId}`);
 				// Assuming you have the fetched image data stored in a variable called `fetchedImages`
 				const renamedImages = response.data.map((image) => {
 					const { cloudinaryUrl, ...rest } = image;
@@ -45,20 +51,16 @@ const Main = () => {
 		fetchImages();
 	}, []);
 
-	const imagses = [
-		{
-			url: "https://s42814.pcdn.co/wp-content/uploads/2020/01/Landscaping-iStock-498015683.0-768x576-1500x1125.jpg.optimal.jpg",
-			title: "image title 1"
-		},
-		{
-			url: "https://www.gardendesign.com/pictures/images/650x490Exact_48x0/site_3/front-landscape-with-cannas-and-japanese-forest-grass-garden-design_17014.jpg",
-			title: "image title 2"
-		}
-	];
 
-	const openLightbox = (image) => {
+	const openLightbox = async (image) => {
+		image.viewsCount = image.viewsCount + 1;
 		setIsOpen(true);
 		setCurrentImageIndex(image);
+		try {
+			await axios.post(`http://localhost:8080/api/img/${image._id}/view`);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const closeLightbox = () => {
@@ -75,8 +77,15 @@ const Main = () => {
 				</button>
 			</nav>
 			<div className="container p-4 d-flex flex-column justify-content-center align-items-center">
-				<Button variant="primary" onClick={handleShow}>
-					Upload Image
+				<Button variant="info" onClick={handleShow}>
+					<b>
+						Upload Image &nbsp;
+						<i className="fa fa-plus"
+							style={{
+								fontSize: "16px",
+							}}
+						/>
+					</b>
 				</Button>
 				<br />
 				<div>
@@ -107,6 +116,14 @@ const Main = () => {
 										<div className="card-body">
 											<h5 className="card-title">{image.title}</h5>
 											<p className="card-text">{image.description}</p>
+											<button type="button" className="btn btn-secondary" disabled>
+												<i className="fa fa-eye"
+													style={{
+														fontSize: "16px",
+													}}
+												/>&nbsp;
+												Views: {image.viewsCount}
+											</button>
 										</div>
 									</div>
 								</div>
