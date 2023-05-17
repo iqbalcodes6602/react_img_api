@@ -1,38 +1,41 @@
 const router = require("express").Router();
-const { User } = require("../models/user");
-const bcrypt = require("bcrypt");
-const Joi = require("joi");
+const Image = require("../models/img");
 
-router.post("/", async (req, res) => {
+router.post("/upload", async (req, res) => {
 	try {
 		const { error } = validate(req.body);
 		if (error)
 			return res.status(400).send({ message: error.details[0].message });
 
-		const user = await User.findOne({ email: req.body.email });
-		if (!user)
-			return res.status(401).send({ message: "Invalid Email or Password" });
+		// const user = await User.findOne({ email: req.body.email });
+		// if (user)
+		// 	return res
+		// 		.status(409)
+		// 		.send({ message: "User with given email already Exist!" });
 
-		const validPassword = await bcrypt.compare(
-			req.body.password,
-			user.password
-		);
-		if (!validPassword)
-			return res.status(401).send({ message: "Invalid Email or Password" });
+		// const salt = await bcrypt.genSalt(Number("hubx"));
+		// const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-		const token = user.generateAuthToken();
-		res.status(200).send({ data: token, message: "logged in successfully" });
+		await new Image({
+			user: req.body.user,
+			title: req.body.title,
+			description: req.body.description,
+			viewsCount: req.body.viewsCount
+		}).save();
+		res.status(201).send({ message: "Image uploaded successfully" });
 	} catch (error) {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 });
 
-const validate = (data) => {
-	const schema = Joi.object({
-		email: Joi.string().email().required().label("Email"),
-		password: Joi.string().required().label("Password"),
-	});
-	return schema.validate(data);
-};
+router.get("/images", async (req, res) => {
+	try {
+		const images = await Image.find();
+		res.status(200).send(images);
+	} catch (error) {
+		res.status(500).send({ message: "Internal Server Error" });
+	}
+});
+
 
 module.exports = router;
