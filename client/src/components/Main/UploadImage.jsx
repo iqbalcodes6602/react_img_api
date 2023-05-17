@@ -21,7 +21,6 @@ const UploadImage = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [cloudinaryUrl, setCloudinaryUrl] = useState('');
-    const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const handleTitleChange = (e) => {
