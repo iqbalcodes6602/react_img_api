@@ -86,14 +86,16 @@ const Main = () => {
 
 
 			<div>
-				{isOpen && (
-					<Lightbox
-						image={currentImageIndex.url}
-						title={currentImageIndex.title + " - " + currentImageIndex.description}
-						onClose={closeLightbox}
-					>
-					</Lightbox>
-				)}
+				{
+					isOpen && (
+						<Lightbox
+							image={currentImageIndex.url}
+							title={currentImageIndex.title + " - " + currentImageIndex.description}
+							onClose={closeLightbox}
+						>
+						</Lightbox>
+					)
+				}
 
 				{
 					<div className="container">
