@@ -15,6 +15,9 @@ app.use(express.json());
 app.use(cors());
 
 // routes
+app.get("/", (req,res) => {
+    res.send("server running")
+})
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/img", imgRoutes);
