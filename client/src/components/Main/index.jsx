@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Modal } from 'react-bootstrap';
 import styles from "./styles.module.css";
 import Lightbox from 'react-awesome-lightbox';
 import 'react-awesome-lightbox/build/style.css';
-import UploadImage from './UploadImage'
+import UploadImage from './UploadImage';
+import axios from 'axios';
+
 
 const Main = () => {
 	const handleLogout = () => {
@@ -20,9 +22,25 @@ const Main = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+
+	//fetch images from backend
+	useEffect(() => {
+		const fetchImages = async () => {
+			try {
+				const response = await axios.get('http://localhost:8080/api/img/images');
+				console.log(response.data);
+				console.log(typeof(response.data));
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		fetchImages();
+	}, []);
+
 	const images = [
 		{
-			url: "\https://s42814.pcdn.co/wp-content/uploads/2020/01/Landscaping-iStock-498015683.0-768x576-1500x1125.jpg.optimal.jpg",
+			url: "https://s42814.pcdn.co/wp-content/uploads/2020/01/Landscaping-iStock-498015683.0-768x576-1500x1125.jpg.optimal.jpg",
 			title: "image title 1"
 		},
 		{
@@ -49,13 +67,16 @@ const Main = () => {
 					Logout
 				</button>
 			</nav>
-			<div>
-				hello there this is the dashboard
-
+			<div className="container p-4 d-flex flex-column justify-content-center align-items-center">
 				<Button variant="primary" onClick={handleShow}>
 					Upload Image
 				</Button>
+				<br />
+				<div>
+					(Please click on any image to view.)
+				</div>
 			</div>
+
 
 			<div>
 				{isOpen && (
@@ -66,11 +87,23 @@ const Main = () => {
 					/>
 				)}
 
-				{images.map((image, index) => (
-					<div key={index}>
-						<img src={image.url} alt={image.title} onClick={() => openLightbox(index)} />
+				{
+					<div className="container">
+						<div className="row">
+							{images.map((image, index) => (
+								<div className="col-md-4" key={index}>
+									<div className="card mb-3">
+										<img style={{ cursor: "pointer" }} onClick={() => openLightbox(index)} src={image.url} className="card-img-top" alt={image.title} />
+										<div className="card-body">
+											<h5 className="card-title">{image.title}</h5>
+											<p className="card-text">{image.description}</p>
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
 					</div>
-				))}
+				}
 			</div>
 
 
