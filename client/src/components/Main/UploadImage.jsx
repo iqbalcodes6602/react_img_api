@@ -50,6 +50,7 @@ const UploadImage = () => {
             const response = await axios.post('http://localhost:8080/api/img/upload', requestBody);
 
             console.log(response.data); // Log the response from the backend
+            window.location.reload()
         } catch (error) {
             console.error(error);
         }
