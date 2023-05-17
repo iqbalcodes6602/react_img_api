@@ -7,13 +7,21 @@ const imageSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  imageFileName: {
+  title: {
+    type: String,
+    required: true
+  },
+  description: {
     type: String,
     required: true
   },
   cloudinaryUrl: {
     type: String,
     required: true
+  },
+  viewsCount: {
+    type: Number,
+    default: 0
   },
   createdAt: {
     type: Date,
