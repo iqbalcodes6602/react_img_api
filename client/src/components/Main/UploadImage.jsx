@@ -140,7 +140,7 @@ const UploadImage = () => {
                         />
                     </div>
                 </Button>
-                <Button variant="primary" onClick={handleUpload}>
+                <Button id="upload_btn" variant="primary" onClick={handleUpload}>
                     Upload
                 </Button>
             </Modal.Footer>
