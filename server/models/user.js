@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateAuthToken = function () {
-	const token = jwt.sign({ _id: this._id }, "zoomapi", {
+	const token = jwt.sign({ _id: this._id }, "hubx", {
 		expiresIn: "7d",
 	});
 	return token;
