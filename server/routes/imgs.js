@@ -4,13 +4,8 @@ const jwt = require("jsonwebtoken")
 
 router.post("/upload", async (req, res) => {
 	try {
-		const { token } = req.body.user;
-		// Verify and decode the JWT token
-		const decodedToken = jwt.verify(token, 'hubx');
-		const userId = decodedToken.userId;
-
 		await new Image({
-			user: userId,
+			user: req.body.user,
 			title: req.body.title,
 			description: req.body.description,
 			cloudinaryUrl: req.body.cloudinaryUrl,
