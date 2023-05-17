@@ -44,7 +44,7 @@ const UploadImage = () => {
                 cloudinaryUrl: cloudinaryUrl,
             };
 
-            const response = await axios.post('https://react-img-api.vercel.app/api/img/upload', requestBody);
+            const response = await axios.post('https://localhost:8080/api/img/upload', requestBody);
 
             console.log(response.data); // Log the response from the backend
             window.location.reload()
