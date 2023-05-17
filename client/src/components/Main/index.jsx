@@ -34,7 +34,7 @@ const Main = () => {
 	useEffect(() => {
 		const fetchImages = async () => {
 			try {
-				const response = await axios.get(`https://localhost:8080/api/img/images/${userId}`);
+				const response = await axios.get(`http://localhost:8080/api/img/images/${userId}`);
 				// Assuming you have the fetched image data stored in a variable called `fetchedImages`
 				const renamedImages = response.data.map((image) => {
 					const { cloudinaryUrl, ...rest } = image;
@@ -57,7 +57,7 @@ const Main = () => {
 		setIsOpen(true);
 		setCurrentImageIndex(image);
 		try {
-			await axios.post(`https://localhost:8080/api/img/${image._id}/view`);
+			await axios.post(`http://localhost:8080/api/img/${image._id}/view`);
 		} catch (error) {
 			console.error(error);
 		}
