@@ -6,7 +6,7 @@ module.exports = () => {
 		useUnifiedTopology: true,
 	};
 	try {
-		mongoose.connect('mongodb://127.0.0.1:27017/zoomapi2', connectionParams);
+		mongoose.connect('mongodb://127.0.0.1:27017/hubx', connectionParams);
 		console.log("Connected to database successfully");
 	} catch (error) {
 		console.log(error);
