@@ -1,18 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
-
 
 const UploadImage = (props) => {
-    //userId from jwt token
-    const token = props.user;// Get the JWT token from your authentication process
-    // Decode the JWT token
-    const decodedToken = jwt.decode(token);
-    // Extract the user ID from the decoded token
-    const userId = decodedToken.userId;
-
-
     //modalfunctionality
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -49,7 +39,7 @@ const UploadImage = (props) => {
         try {
             const formData = new FormData();
             formData.append('image', image);
-            formData.append('user', userId);//from token
+            formData.append('user', {user});
             formData.append('title', title);
             formData.append('description', description);
             formData.append('cloudinaryUrl', cloudinaryUrl);
