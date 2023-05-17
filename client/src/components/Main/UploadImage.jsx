@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
 
 const UploadImage = () => {
+
     //jwt funcitions
     const token = localStorage.getItem("token");// Get the JWT token from your authentication process
     // Decode the JWT token and extract the user ID
@@ -21,6 +22,7 @@ const UploadImage = () => {
     const [description, setDescription] = useState('');
     const [cloudinaryUrl, setCloudinaryUrl] = useState('');
     const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -30,15 +32,11 @@ const UploadImage = () => {
         setDescription(e.target.value);
     };
 
-    const handleCloudinaryUrlChange = (e) => {
-        setCloudinaryUrl(e.target.value);
-    };
-
-    const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
-    };
-
     const handleUpload = async () => {
+        if (title === "" || description === "0" || cloudinaryUrl === "") {
+            window.alert("Please enter all fields");
+            return;
+        }
         try {
             const requestBody = {
                 user: userId, // from token
@@ -58,8 +56,10 @@ const UploadImage = () => {
 
 
     const postDetails = (pics) => {
+        setLoading(true);
         if (!pics || pics.length === 0) {
             window.alert("Please select an image");
+            setLoading(false);
             return;
         }
 
@@ -78,12 +78,15 @@ const UploadImage = () => {
                     setCloudinaryUrl(data.url.toString());
                     console.log(cloudinaryUrl);
                     console.log(data.url.toString());
+                    setLoading(false);
                 })
                 .catch((err) => {
                     console.log(err);
+                    setLoading(false);
                 });
         } else {
             window.alert("Please select a valid image (JPEG or PNG)");
+            setLoading(false);
             return;
         }
     };
@@ -140,7 +143,11 @@ const UploadImage = () => {
                         />
                     </div>
                 </Button>
-                <Button id="upload_btn" variant="primary" onClick={handleUpload}>
+                <Button
+                    variant="info"
+                    onClick={handleUpload}
+                    disabled={loading}
+                >
                     Upload
                 </Button>
             </Modal.Footer>
