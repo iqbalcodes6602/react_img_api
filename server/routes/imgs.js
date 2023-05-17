@@ -28,6 +28,15 @@ router.get("/images/:userId", async (req, res) => {
 	}
 });
 
+router.get("/images", async (req, res) => {
+	try {
+		const images = await Image.find();
+		res.status(200).send(images);
+	} catch (error) {
+		res.status(500).send({ message: "Internal Server Error" });
+	}
+});
+
 router.post("/:id/view", async (req, res) => {
 	try {
 		const image = await Image.findById(req.params.id);
