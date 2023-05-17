@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
@@ -12,10 +12,10 @@ const UploadImage = () => {
     const decodedToken = jwt_decode(token);
     const userId = decodedToken._id;
 
-    //modalfunctionality
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // //modalfunctionality
+    // const [show, setShow] = useState(false);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
 
 
     const [title, setTitle] = useState('');
@@ -131,7 +131,7 @@ const UploadImage = () => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary">
                     <div>
                         <label>Image:</label>
                         <input
