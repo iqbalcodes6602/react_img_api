@@ -5,7 +5,7 @@ const cors = require("cors");
 const connection = require("./db");
 const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
-const imgRoutes = require("./routes/img");
+const imgRoutes = require("./routes/imgs");
 
 // database connection
 connection();
