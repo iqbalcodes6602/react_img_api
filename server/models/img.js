@@ -1,32 +1,27 @@
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const Joi = require("joi");
-const passwordComplexity = require("joi-password-complexity");
+const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-	firstName: { type: String, required: true },
-	lastName: { type: String, required: true },
-	email: { type: String, required: true },
-	password: { type: String, required: true },
+// Define the schema for the image table
+const imageSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  imageFileName: {
+    type: String,
+    required: true
+  },
+  cloudinaryUrl: {
+    type: String,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
-userSchema.methods.generateAuthToken = function () {
-	const token = jwt.sign({ _id: this._id }, "hubx", {
-		expiresIn: "7d",
-	});
-	return token;
-};
+// Create the Image model using the imageSchema
+const Image = mongoose.model('Image', imageSchema);
 
-const User = mongoose.model("user", userSchema);
-
-const validate = (data) => {
-	const schema = Joi.object({
-		firstName: Joi.string().required().label("First Name"),
-		lastName: Joi.string().required().label("Last Name"),
-		email: Joi.string().email().required().label("Email"),
-		password: passwordComplexity().required().label("Password"),
-	});
-	return schema.validate(data);
-};
-
-module.exports = { User, validate };
+module.exports = Image;
