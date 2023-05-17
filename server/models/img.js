@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const imageSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
     required: true
   },
   title: {
@@ -17,7 +16,7 @@ const imageSchema = new mongoose.Schema({
   },
   cloudinaryUrl: {
     type: String,
-    required: true
+    required: false
   },
   viewsCount: {
     type: Number,
