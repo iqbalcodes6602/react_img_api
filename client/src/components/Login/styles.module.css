@@ -1,3 +1,5 @@
+/* Default styles */
+
 .login_container {
 	width: 100%;
 	min-height: 100vh;
@@ -13,7 +15,8 @@
 	display: flex;
 	border-radius: 10px;
 	box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
-		0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+		0px 3px 4px 0px rgb(0 0 0 / 14%),
+		0px 1px 8px 0px rgb(0 0 0 / 12%);
 }
 
 .left {
@@ -95,4 +98,44 @@
 	background-color: #3bb19b;
 	color: white;
 	margin: 10px;
+}
+
+/* Media queries for responsive adjustments */
+
+@media (max-width: 768px) {
+	.login_form_container {
+		flex-direction: column;
+		height: auto;
+		width: 90%;
+		max-width: 500px;
+	}
+
+	.left {
+		border-radius: 10px 10px 0 0;
+		padding: 20px;
+	}
+
+	.right {
+		border-radius: 0 0 10px 10px;
+		padding: 20px;
+	}
+
+	.form_container h1 {
+		font-size: 30px;
+	}
+
+	.right h1 {
+		font-size: 30px;
+	}
+
+	.input {
+		width: 100%;
+	}
+
+	.white_btn{
+		width: 200px;
+	}
+	.green_btn {
+		width: 100%;
+	}
 }
