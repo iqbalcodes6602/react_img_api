@@ -24,12 +24,19 @@ const Main = () => {
 
 
 	//fetch images from backend
+	const [images, setImages] = useState([]);
 	useEffect(() => {
 		const fetchImages = async () => {
 			try {
 				const response = await axios.get('http://localhost:8080/api/img/images');
-				console.log(response.data);
-				console.log(typeof(response.data));
+				// Assuming you have the fetched image data stored in a variable called `fetchedImages`
+				const renamedImages = response.data.map((image) => {
+					const { cloudinaryUrl, ...rest } = image;
+					return { url: cloudinaryUrl, ...rest };
+				});
+
+				console.log(renamedImages);
+				setImages(renamedImages);
 			} catch (error) {
 				console.error(error);
 			}
@@ -38,7 +45,7 @@ const Main = () => {
 		fetchImages();
 	}, []);
 
-	const images = [
+	const imagses = [
 		{
 			url: "https://s42814.pcdn.co/wp-content/uploads/2020/01/Landscaping-iStock-498015683.0-768x576-1500x1125.jpg.optimal.jpg",
 			title: "image title 1"
@@ -49,9 +56,9 @@ const Main = () => {
 		}
 	];
 
-	const openLightbox = (index) => {
+	const openLightbox = (image) => {
 		setIsOpen(true);
-		setCurrentImageIndex(index);
+		setCurrentImageIndex(image);
 	};
 
 	const closeLightbox = () => {
@@ -81,10 +88,11 @@ const Main = () => {
 			<div>
 				{isOpen && (
 					<Lightbox
-						images={images}
-						currentIndex={currentImageIndex}
+						image={currentImageIndex.url}
+						title={currentImageIndex.title + " - " + currentImageIndex.description}
 						onClose={closeLightbox}
-					/>
+					>
+					</Lightbox>
 				)}
 
 				{
@@ -93,7 +101,7 @@ const Main = () => {
 							{images.map((image, index) => (
 								<div className="col-md-4" key={index}>
 									<div className="card mb-3">
-										<img style={{ cursor: "pointer" }} onClick={() => openLightbox(index)} src={image.url} className="card-img-top" alt={image.title} />
+										<img style={{ cursor: "pointer" }} onClick={() => openLightbox(image)} src={image.url} className="card-img-top" alt={image.title} />
 										<div className="card-body">
 											<h5 className="card-title">{image.title}</h5>
 											<p className="card-text">{image.description}</p>
