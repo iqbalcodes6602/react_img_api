@@ -1,10 +1,16 @@
 const router = require("express").Router();
 const Image = require("../models/img");
+const jwt = require("jsonwebtoken")
 
 router.post("/upload", async (req, res) => {
 	try {
+		const { token } = req.body.user;
+		// Verify and decode the JWT token
+		const decodedToken = jwt.verify(token, 'hubx');
+		const userId = decodedToken.userId;
+
 		await new Image({
-			user: req.body.user,
+			user: userId,
 			title: req.body.title,
 			description: req.body.description,
 			cloudinaryUrl: req.body.cloudinaryUrl,
@@ -13,7 +19,7 @@ router.post("/upload", async (req, res) => {
 
 		res.status(201).send({ message: "Image uploaded successfully" });
 	} catch (error) {
-		res.status(500).send({ message: "Internal Server Error" + error.message });
+		res.status(500).send({ message: "Internal Server Error: " + error.message });
 	}
 });
 
