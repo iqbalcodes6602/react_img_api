@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const Image = require("../models/img");
-const jwt = require("jsonwebtoken")
 
 router.post("/upload", async (req, res) => {
 	try {
