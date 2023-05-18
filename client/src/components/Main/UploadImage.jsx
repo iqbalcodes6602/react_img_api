@@ -7,15 +7,10 @@ import jwt_decode from 'jwt-decode';
 const UploadImage = () => {
 
     //jwt funcitions
-    const token = localStorage.getItem("token");// Get the JWT token from your authentication process
+    const token = localStorage.getItem("token");// Get the JWT token from authentication process
     // Decode the JWT token and extract the user ID
     const decodedToken = jwt_decode(token);
     const userId = decodedToken._id;
-
-    // //modalfunctionality
-    // const [show, setShow] = useState(false);
-    // const handleClose = () => setShow(false);
-    // const handleShow = () => setShow(true);
 
 
     const [title, setTitle] = useState('');

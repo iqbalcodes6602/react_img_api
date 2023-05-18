@@ -6,17 +6,19 @@ import 'react-awesome-lightbox/build/style.css';
 import UploadImage from './UploadImage';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import { useNavigate } from "react-router-dom";
 
 
 const Main = () => {
-	const token = localStorage.getItem("token");// Get the JWT token from your authentication process
+	const navigate = useNavigate();
+	const token = localStorage.getItem("token");// Get the JWT token from authentication process
 	// Decode the JWT token and extract the user ID
 	const decodedToken = jwt_decode(token);
 	const userId = decodedToken._id;
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
-		window.location.reload();
+		navigate("/login");
 	};
 
 	//modalfunctionality
@@ -35,7 +37,7 @@ const Main = () => {
 		const fetchImages = async () => {
 			try {
 				const response = await axios.get(`http://localhost:8080/api/img/images/${userId}`);
-				// Assuming you have the fetched image data stored in a variable called `fetchedImages`
+				//fetched image data stored in a variable called `fetchedImages`
 				const renamedImages = response.data.map((image) => {
 					const { cloudinaryUrl, ...rest } = image;
 					return { url: cloudinaryUrl, ...rest };
